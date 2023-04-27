@@ -31,7 +31,6 @@ class LoginP(QMainWindow):
         self.btn.setGeometry(90, 145, 200, 50)
 
         self.inputUser = QLineEdit(self)
-
         self.inputUser.setGeometry(110, 84, 100, 25)
         self.inputUser.setClearButtonEnabled(True)
         self.inputUser.returnPressed.connect(self.show_text)

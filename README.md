@@ -5,6 +5,6 @@ Nuestro proyecto es una aplicación de gestión de inventarios que tiene como ob
 - Artadi Ruiz, Gonzalo
 - Santa Cruz Pachas, Edward Grover.
 - Ortiz Quispe, Akcel Eduardo.
-- Canales, Gerson
+- Canales Borda, Gerson Giovani
 - Marcos Vásquez, Eduardo
 - Caballero, Omar.

@@ -4,11 +4,13 @@ from BaseDatos.FuncionesDB import *
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
+from Funciones import*
 
 import os.path
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 db_path = os.path.join(BASE_DIR, "BaseDatos\\producto.db")
+
 
 
 class LoginP(QMainWindow):
@@ -18,35 +20,30 @@ class LoginP(QMainWindow):
         self.usuario = None
         self.contrasena = None
 
-        self.setFixedSize(300,200)
+        self.setFont(QFont('arial', 20))
+        self.setFixedSize(1280,720)
         self.setWindowTitle("Login")
 
         label = QLabel("Usuario: ", self)
-        label.setGeometry(50, 50, 100, 100)
+        label.setGeometry(850, 250, 100, 100)
 
         label1 = QLabel("Pass: ", self)
-        label1.setGeometry(50, 80, 100, 100)
+        label1.setGeometry(850, 350, 100, 100)
 
-        self.btn = QPushButton("Ingresar", self)
-        self.btn.setGeometry(90, 145, 200, 50)
+        self.btn = QPushButton("Login", self)
+        self.btn.setGeometry(900, 500, 200, 50)
 
         self.inputUser = QLineEdit(self)
-        self.inputUser.setGeometry(110, 84, 100, 25)
+        self.inputUser.setGeometry(850, 325, 300, 45)
         self.inputUser.setClearButtonEnabled(True)
-        self.inputUser.returnPressed.connect(self.show_text)
 
         self.inputPass = QLineEdit(self)
-        self.inputPass.setGeometry(110, 114, 100, 25)
+        self.inputPass.setGeometry(850, 425, 300, 45)
         self.inputPass.setClearButtonEnabled(True)
         self.inputPass.setEchoMode(QLineEdit.Password)
-        self.inputPass.returnPressed.connect(self.show_text)
 
         self.btn.clicked.connect(lambda: self.verificar())
-
-    def show_text(self):
-        self.usuario = str(self.inputUser.text())
-        self.contrasena = str(self.inputPass.text())
-
+        
     def consultar(self, query, parameters=()):
         with sql.connect(db_path) as conn:
             cursor = conn.cursor()
@@ -56,11 +53,16 @@ class LoginP(QMainWindow):
         return result
 
     def verificar(self):
+        self.usuario = str(self.inputUser.text())
+        self.contrasena = str(self.inputPass.text())
+
         check = FuncionesDB.verificarCredenciales(self)
         if(check == True):
-            print("Bienvenido al programa.")
+            self.close()
+            window = VentanaMenu()
+            window.show()
         else:
-            print("Reingrese las credenciales correctas.")
+            QMessageBox.question(self, 'ERROR', "Usuario o contraseña Incorrecta", QMessageBox.Ok)
 
 if __name__ == '__main__':
     app = QApplication([])

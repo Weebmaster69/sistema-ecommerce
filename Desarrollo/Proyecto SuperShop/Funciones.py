@@ -9,6 +9,44 @@ import os.path
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 db_path = os.path.join(BASE_DIR, "BaseDatos\\producto.db")
+app = QApplication([])
+
+class VentanaMenu(QMainWindow):
+    def __init__(self, parent = None, *args):
+        super(VentanaMenu, self).__init__(parent = None)
+
+        self.setFont(QFont('arial', 20))
+        self.setFixedSize(1280,720)
+        self.setWindowTitle("Menu")
+
+        label = QLabel("Bienvenido que desea hacer hoy: ", self)
+        label.setGeometry(150, 230, 400, 100)
+
+        self.btn = QPushButton("Añadir Productos", self)
+        self.btn.setGeometry(300, 350, 300, 50)
+        self.btn.clicked.connect(lambda: self.AbrirAnadir())
+
+        self.btn2 = QPushButton("Eliminar Producto", self)
+        self.btn2.setGeometry(300, 450, 300, 50)
+        self.btn2.clicked.connect(lambda: self.VentanaAnadir())
+
+        self.btn3 = QPushButton("Modificar Producto", self)
+        self.btn3.setGeometry(300, 550, 300, 50)
+        self.btn3.clicked.connect(lambda: self.VentanaAnadir())
+
+        self.btn4 = QPushButton("Generar Reporte", self)
+        self.btn4.setGeometry(720, 400, 300, 50)
+        self.btn4.clicked.connect(lambda: self.VentanaAnadir())
+
+        self.btn5 = QPushButton("Listar Producto", self)
+        self.btn5.setGeometry(720, 500, 300, 50)
+        self.btn5.clicked.connect(lambda: self.VentanaAnadir())
+
+    def AbrirAnadir(self):
+        self.close()
+        window = VentanaAnadir()
+        window.show()
+        
 
 class VentanaAnadir(QMainWindow):
     def __init__(self, parent = None, *args):
@@ -20,60 +58,51 @@ class VentanaAnadir(QMainWindow):
         self.Desc = None
         self.Stock = None
 
+        self.setFont(QFont('arial', 20))
         self.setFixedSize(1280,720)
         self.setWindowTitle("Login")
 
         label = QLabel("ID: ", self)
-        label.setGeometry(50, 50, 100, 100)
+        label.setGeometry(250, 280, 100, 100)
 
         label1 = QLabel("Precio: ", self)
-        label1.setGeometry(200, 50, 100, 100)
+        label1.setGeometry(600, 280, 100, 100)
 
         label2 = QLabel("Nombre: ", self)
-        label2.setGeometry(50, 110, 100, 100)
+        label2.setGeometry(250, 380, 100, 100)
 
         label3 = QLabel("Descripcion: ", self)
-        label3.setGeometry(200, 110, 100, 100)
+        label3.setGeometry(600, 380, 300, 100)
 
         label4 = QLabel("Stock: ", self)
-        label4.setGeometry(50, 170, 100, 100)
+        label4.setGeometry(250, 480, 100, 100)
 
         self.inputID = QLineEdit(self)
-        self.inputID.setGeometry(50, 115, 100, 25)
+        self.inputID.setGeometry(250, 355, 300, 45)
         self.inputID.setClearButtonEnabled(True)
-        self.inputID.returnPressed.connect(self.show_text)
 
         self.inputPrecio = QLineEdit(self)
-        self.inputPrecio.setGeometry(200, 115, 100, 25)
+        self.inputPrecio.setGeometry(600, 355, 300, 45)
         self.inputPrecio.setClearButtonEnabled(True)
-        self.inputPrecio.returnPressed.connect(self.show_text)
 
         self.inputNombre = QLineEdit(self)
-        self.inputNombre.setGeometry(50, 175, 100, 25)
+        self.inputNombre.setGeometry(250, 455, 300, 45)
         self.inputNombre.setClearButtonEnabled(True)
-        self.inputNombre.returnPressed.connect(self.show_text)
 
-        self.inputDesc = QLineEdit(self)
-        self.inputDesc.setGeometry(200, 175, 100, 85)
-        self.inputDesc.setClearButtonEnabled(True)
-        self.inputDesc.returnPressed.connect(self.show_text)
+        self.inputDesc = QTextEdit(self)
+        self.inputDesc.setGeometry(600, 455, 300, 145)
 
         self.inputStock = QLineEdit(self)
-        self.inputStock.setGeometry(50, 235, 100, 25)
+        self.inputStock.setGeometry(250, 555, 300, 45)
         self.inputStock.setClearButtonEnabled(True)
-        self.inputStock.returnPressed.connect(self.show_text)
 
         self.btn = QPushButton("Agregar", self)
-        self.btn.setGeometry(330, 150, 100, 50)
-        
+        self.btn.setGeometry(950, 455, 150, 50)
         self.btn.clicked.connect(lambda: self.agregar())
 
-    def show_text(self):
-        self.Id = self.inputID.text()
-        self.Precio = self.inputPrecio.text()
-        self.Nombre = str(self.inputNombre.text())
-        self.Desc = str(self.inputDesc.text())
-        self.Stock = self.inputStock.text()
+        self.btn2 = QPushButton("<<", self)
+        self.btn2.setGeometry(50, 50, 60, 60)
+        self.btn2.clicked.connect(lambda: self.AbrirMenu())
 
     def consultar(self, query, parameters = ()):
         with sql.connect(db_path) as conn:
@@ -84,14 +113,26 @@ class VentanaAnadir(QMainWindow):
         return result
 
     def agregar(self):
-        query = 'INSERT or IGNORE INTO Producto VALUES(?, ?, ?, ?, ?)'
-        parametros = (self.Id, self.Precio, self.Nombre, self.Desc, self.Stock)
-        self.consultar(query, parametros)
-        print("Los datos han sido guardados.")
+        self.Id = self.inputID.text()
+        self.Precio = self.inputPrecio.text()
+        self.Nombre = str(self.inputNombre.text())
+        self.Desc = str(self.inputDesc.toPlainText())
+        self.Stock = self.inputStock.text()
 
+        if (len(self.Id) >0 or self.Id.isdigit() == True or len(self.Precio) >0 or self.Precio.isdigit() == True or len(self.Nombre) >0 or len(self.Stock) >0 or len(self.Stock) >0 or self.Stock.isdigit() == True):
+            query = 'INSERT or IGNORE INTO Producto VALUES(?, ?, ?, ?, ?)'
+            parametros = (self.Id, self.Precio, self.Nombre, self.Desc, self.Stock)
+            self.consultar(query, parametros)
+        else:
+            QMessageBox.question(self, 'ERROR', "Datos inválidos", QMessageBox.Ok)
+
+    def AbrirMenu(self):
+        self.close()
+        window = VentanaMenu()
+        window.show()
     
-if __name__ == '__main__':
-    app = QApplication([])
-    window = VentanaAnadir()
-    window.show()
-    app.exec_()
+#if __name__ == '__main__':
+#    app = QApplication([])
+#    window = VentanaAnadir()
+#    window.show()
+#    app.exec_()

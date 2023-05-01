@@ -4,13 +4,15 @@ from BaseDatos.FuncionesDB import *
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
-from Funciones import*
 
 import os.path
 
+from BaseDatos import FuncionesDB
+
+from Funciones import *
+
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 db_path = os.path.join(BASE_DIR, "BaseDatos\\producto.db")
-
 
 
 class LoginP(QMainWindow):

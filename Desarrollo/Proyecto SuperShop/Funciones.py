@@ -47,7 +47,6 @@ class VentanaMenu(QMainWindow):
         window = VentanaAnadir()
         window.show()
         
-
 class VentanaAnadir(QMainWindow):
     def __init__(self, parent = None, *args):
         super(VentanaAnadir, self).__init__(parent = None)

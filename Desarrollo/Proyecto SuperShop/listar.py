@@ -5,14 +5,22 @@ from PyQt5.QtGui import *
 
 import os.path
 
+import Funciones as Func
+
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 db_path = os.path.join(BASE_DIR, "BaseDatos\\producto.db")
 
 class VentanaListarProductos(QMainWindow):
-    def __init__(self, parent=None):
-        super(VentanaListarProductos, self).__init__(parent)
-        self.setWindowTitle("Lista de productos")
-        self.setFixedSize(640, 480)
+    def __init__(self, parent=None, *args):
+        super(VentanaListarProductos, self).__init__(parent=None)
+
+        self.setFont(QFont('arial', 20))
+        self.setFixedSize(1280,720)
+        self.setWindowTitle("Login")
+
+        self.btn2 = QPushButton("<<", self)
+        self.btn2.setGeometry(50, 50, 60, 60)
+        self.btn2.clicked.connect(lambda: self.AbrirMenu())
 
         # Crear la tabla para mostrar los productos
         self.tablaProductos = QTableWidget(self)
@@ -41,9 +49,14 @@ class VentanaListarProductos(QMainWindow):
             cursor.execute(query, parameters)
             result = cursor.fetchall()
         return result
+    
+    def AbrirMenu(self):
+            self.close()
+            window = Func.VentanaMenu()
+            window.show()
 
 if __name__ == '__main__':
-    app = QApplication([])
-    window = VentanaListarProductos()
-    window.show()
-    app.exec_()
+   app = QApplication([])
+   window = VentanaListarProductos()
+   window.show()
+   app.exec_()

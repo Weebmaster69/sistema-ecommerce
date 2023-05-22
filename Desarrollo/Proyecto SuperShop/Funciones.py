@@ -11,6 +11,9 @@ BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 db_path = os.path.join(BASE_DIR, "BaseDatos\\producto.db")
 app = QApplication([])
 
+import listar as List
+import eliminar as Elim
+
 class VentanaMenu(QMainWindow):
     def __init__(self, parent = None, *args):
         super(VentanaMenu, self).__init__(parent = None)
@@ -28,7 +31,7 @@ class VentanaMenu(QMainWindow):
 
         self.btn2 = QPushButton("Eliminar Producto", self)
         self.btn2.setGeometry(300, 450, 300, 50)
-        self.btn2.clicked.connect(lambda: self.VentanaAnadir())
+        self.btn2.clicked.connect(lambda: self.AbrirEliminar())
 
         self.btn3 = QPushButton("Modificar Producto", self)
         self.btn3.setGeometry(300, 550, 300, 50)
@@ -40,11 +43,21 @@ class VentanaMenu(QMainWindow):
 
         self.btn5 = QPushButton("Listar Producto", self)
         self.btn5.setGeometry(720, 500, 300, 50)
-        self.btn5.clicked.connect(lambda: self.VentanaAnadir())
+        self.btn5.clicked.connect(lambda: self.AbrirLista())
 
     def AbrirAnadir(self):
         self.close()
         window = VentanaAnadir()
+        window.show()
+
+    def AbrirEliminar(self):
+        self.close()
+        window = Elim.VentanaEliminar()
+        window.show()
+
+    def AbrirLista(self):
+        self.close()
+        window = List.VentanaListarProductos()
         window.show()
         
 class VentanaAnadir(QMainWindow):
@@ -120,7 +133,7 @@ class VentanaAnadir(QMainWindow):
 
         if (len(self.Id) >0 or self.Id.isdigit() == True or len(self.Precio) >0 or self.Precio.isdigit() == True or len(self.Nombre) >0 or len(self.Stock) >0 or len(self.Stock) >0 or self.Stock.isdigit() == True):
             query = 'INSERT or IGNORE INTO Producto VALUES(?, ?, ?, ?, ?)'
-            parametros = (self.Id, self.Precio, self.Nombre, self.Desc, self.Stock)
+            parametros = (self.Id, self.Nombre, self.Stock, self.Desc, self.Precio)
             self.consultar(query, parametros)
         else:
             QMessageBox.question(self, 'ERROR', "Datos inválidos", QMessageBox.Ok)
@@ -130,8 +143,3 @@ class VentanaAnadir(QMainWindow):
         window = VentanaMenu()
         window.show()
     
-#if __name__ == '__main__':
-#    app = QApplication([])
-#    window = VentanaAnadir()
-#    window.show()
-#    app.exec_()

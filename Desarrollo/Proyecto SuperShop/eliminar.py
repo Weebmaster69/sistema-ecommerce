@@ -5,6 +5,8 @@ from PyQt5.QtGui import *
 
 import os.path
 
+import Funciones as Func
+
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 db_path = os.path.join(BASE_DIR, "BaseDatos\\producto.db")
 
@@ -28,6 +30,10 @@ class VentanaEliminar(QMainWindow):
         self.btn = QPushButton("Eliminar", self)
         self.btn.setGeometry(330, 150, 100, 50)
         
+        self.btn2 = QPushButton("<<", self)
+        self.btn2.setGeometry(50, 50, 60, 60)
+        self.btn2.clicked.connect(lambda: self.AbrirMenu())
+
         self.btn.clicked.connect(lambda: self.eliminar())
 
     def show_text(self):
@@ -46,6 +52,11 @@ class VentanaEliminar(QMainWindow):
         parametros = (self.Id,)
         self.consultar(query, parametros)
         print("El registro ha sido eliminado.")
+
+    def AbrirMenu(self):
+        self.close()
+        window = Func.VentanaMenu()
+        window.show()
 
     
 if __name__ == '__main__':

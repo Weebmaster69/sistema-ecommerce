@@ -15,15 +15,15 @@ logo_SS = os.path.join(BASE_DIR, "Resources\\SS_Logo.png")
 
 app = QApplication([])
 
-class VentanaEliminar(QMainWindow):
+class VentanaReporte(QMainWindow):
     def __init__(self, parent = None, *args):
-        super(VentanaEliminar, self).__init__(parent = None)
+        super(VentanaReporte, self).__init__(parent = None)
 
         self.Id = None
 
         self.setFont(QFont('arial', 20))
         self.setFixedSize(1280,720)
-        self.setWindowTitle("Eliminar")
+        self.setWindowTitle("Modificar")
 
         background = QLabel(self)
         background1 = QPixmap(back).scaledToWidth(1400)
@@ -40,6 +40,9 @@ class VentanaEliminar(QMainWindow):
         logoSS.setGeometry(200,40,logoSS1.width(),logoSS1.height())
         logoSS.setPixmap(logoSS1)
 
+        texto = QLabel("El reporte de ventas de hoy: ", self)
+        texto.setGeometry(100, 220, 600, 100)
+
         label = QLabel("ID: ", self)
         label.setGeometry(250, 280, 100, 100)
 
@@ -48,7 +51,7 @@ class VentanaEliminar(QMainWindow):
         self.inputID.setClearButtonEnabled(True)
         self.inputID.returnPressed.connect(self.show_text)
 
-        self.btn = QPushButton("Eliminar", self)
+        self.btn = QPushButton("Imprimir", self)
         self.btn.setGeometry(950, 455, 150, 50)
         self.btn.clicked.connect(lambda: self.eliminar())
         

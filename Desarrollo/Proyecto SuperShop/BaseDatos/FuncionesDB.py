@@ -22,16 +22,3 @@ class FuncionesDB():
             return True
         else:
             return False
-        
-class AgregarProducto():
-    def agregarProducto(self):
-        self.codigo =  int(input("Ingrese el codigo del nuevo libro: "))
-        self.nombre =  str(input("Ingrese el nombre del nuevo libro: "))    
-        self.autor = str(input("Ingresar el autor del nuevo libro: "))
-        self.stock = int(input("Ingresar el stock del nuevo libro: "))
-        Verificacion = Funciones_Admin_Db.VerificarCodigo(self)
-        if (self.codigo > 0 and len(self.nombre) != 0 and len(self.autor) != 0 and self.stock > 0) and (isinstance(self.codigo, int) and (self.nombre, str) and self.autor.isdigit() != True and isinstance(self.stock, int)) and Verificacion == True :
-            Funciones_Admin_Db.agregarProductos(self)
-        else:
-            print("Ingrese correctamente los campos solicitados.")
-        VolverMenuPrincipal.volverMenu(self)

@@ -56,10 +56,6 @@ class VentanaEliminar(QMainWindow):
         self.btn2.setGeometry(50, 50, 60, 60)
         self.btn2.clicked.connect(lambda: self.AbrirMenu())
 
-
-    def show_text(self):
-        self.Id = self.inputID.text()
-
     def consultar(self, query, parameters = ()):
         with sql.connect(db_path) as conn:
             cursor = conn.cursor()
@@ -69,9 +65,11 @@ class VentanaEliminar(QMainWindow):
         return result
 
     def eliminar(self):
+        self.Id = self.inputID.text()
+        parametros = self.Id
         query = 'DELETE FROM Producto WHERE Id = ?'
-        parametros = (self.Id,)
-        self.consultar(query, parametros)
+        self.consultar(query, [parametros])
+        print(self.Id)
         QMessageBox.question(self, 'LISTO', "El producto se elimino correctamente de la base de datos", QMessageBox.Ok)
 
     def AbrirMenu(self):

@@ -46,7 +46,6 @@ class VentanaEliminar(QMainWindow):
         self.inputID = QLineEdit(self)
         self.inputID.setGeometry(250, 355, 300, 45)
         self.inputID.setClearButtonEnabled(True)
-        self.inputID.returnPressed.connect(self.show_text)
 
         self.btn = QPushButton("Eliminar", self)
         self.btn.setGeometry(950, 455, 150, 50)

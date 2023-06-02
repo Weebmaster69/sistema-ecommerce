@@ -9,7 +9,17 @@ import os.path
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 db_path = os.path.join(BASE_DIR, "BaseDatos\\producto.db")
+back = os.path.join(BASE_DIR, "Resources\\fondo.png")
+cuadro_Trans = os.path.join(BASE_DIR, "Resources\\cuadroTrans.png")
+logo_Bertell = os.path.join(BASE_DIR, "Resources\\Bertell_Logo.png")
+logo_SS = os.path.join(BASE_DIR, "Resources\\SS_Logo.png")
+
 app = QApplication([])
+
+import listar as List
+import eliminar as Elim
+import modificar as Mod
+import genReporte as Gen
 
 class VentanaMenu(QMainWindow):
     def __init__(self, parent = None, *args):
@@ -18,6 +28,26 @@ class VentanaMenu(QMainWindow):
         self.setFont(QFont('arial', 20))
         self.setFixedSize(1280,720)
         self.setWindowTitle("Menu")
+
+        background = QLabel(self)
+        background1 = QPixmap(back).scaledToWidth(1400)
+        background.setGeometry(0,0,background1.width(),background1.height()-40)
+        background.setPixmap(background1)
+
+        cuadroTrans = QLabel(self)
+        cuadroTrans1 = QPixmap(cuadro_Trans).scaledToHeight(1400)
+        cuadroTrans.setGeometry(0,225,cuadroTrans1.width(),cuadroTrans1.height()-930)
+        cuadroTrans.setPixmap(cuadroTrans1)
+
+        logoBertell = QLabel(self)
+        logoBertell1 = QPixmap(logo_Bertell).scaledToWidth(200)
+        logoBertell.setGeometry(30,25,logoBertell1.width(),logoBertell1.height())
+        logoBertell.setPixmap(logoBertell1)
+
+        logoSS = QLabel(self)
+        logoSS1 = QPixmap(logo_SS).scaledToWidth(850)
+        logoSS.setGeometry(200,40,logoSS1.width(),logoSS1.height())
+        logoSS.setPixmap(logoSS1)
 
         label = QLabel("Bienvenido que desea hacer hoy: ", self)
         label.setGeometry(150, 230, 400, 100)
@@ -28,26 +58,45 @@ class VentanaMenu(QMainWindow):
 
         self.btn2 = QPushButton("Eliminar Producto", self)
         self.btn2.setGeometry(300, 450, 300, 50)
-        self.btn2.clicked.connect(lambda: self.VentanaAnadir())
+        self.btn2.clicked.connect(lambda: self.AbrirEliminar())
 
         self.btn3 = QPushButton("Modificar Producto", self)
         self.btn3.setGeometry(300, 550, 300, 50)
-        self.btn3.clicked.connect(lambda: self.VentanaAnadir())
+        self.btn3.clicked.connect(lambda: self.AbrirMod())
 
         self.btn4 = QPushButton("Generar Reporte", self)
         self.btn4.setGeometry(720, 400, 300, 50)
-        self.btn4.clicked.connect(lambda: self.VentanaAnadir())
+        self.btn4.clicked.connect(lambda: self.AbrirGen())
 
         self.btn5 = QPushButton("Listar Producto", self)
         self.btn5.setGeometry(720, 500, 300, 50)
-        self.btn5.clicked.connect(lambda: self.VentanaAnadir())
+        self.btn5.clicked.connect(lambda: self.AbrirLista())
 
     def AbrirAnadir(self):
         self.close()
         window = VentanaAnadir()
         window.show()
-        
 
+    def AbrirEliminar(self):
+        self.close()
+        window = Elim.VentanaEliminar()
+        window.show()
+
+    def AbrirMod(self):
+        self.close()
+        window = Mod.VentanaModificar()
+        window.show()
+
+    def AbrirGen(self):
+        self.close()
+        window = Gen.VentanaReporte()
+        window.show()
+
+    def AbrirLista(self):
+        self.close()
+        window = List.VentanaListarProductos()
+        window.show()
+        
 class VentanaAnadir(QMainWindow):
     def __init__(self, parent = None, *args):
         super(VentanaAnadir, self).__init__(parent = None)
@@ -61,6 +110,24 @@ class VentanaAnadir(QMainWindow):
         self.setFont(QFont('arial', 20))
         self.setFixedSize(1280,720)
         self.setWindowTitle("Login")
+
+        background = QLabel(self)
+        background1 = QPixmap(back).scaledToWidth(1400)
+        background.setGeometry(0,0,background1.width(),background1.height()-40)
+        background.setPixmap(background1)
+
+        cuadroTrans = QLabel(self)
+        cuadroTrans1 = QPixmap(cuadro_Trans).scaledToHeight(1400)
+        cuadroTrans.setGeometry(0,225,cuadroTrans1.width(),cuadroTrans1.height()-930)
+        cuadroTrans.setPixmap(cuadroTrans1)
+
+        logoSS = QLabel(self)
+        logoSS1 = QPixmap(logo_SS).scaledToWidth(850)
+        logoSS.setGeometry(200,40,logoSS1.width(),logoSS1.height())
+        logoSS.setPixmap(logoSS1)
+
+        texto = QLabel("Añadir Producto: ", self)
+        texto.setGeometry(150, 230, 400, 100)
 
         label = QLabel("ID: ", self)
         label.setGeometry(250, 280, 100, 100)
@@ -121,8 +188,9 @@ class VentanaAnadir(QMainWindow):
 
         if (len(self.Id) >0 or self.Id.isdigit() == True or len(self.Precio) >0 or self.Precio.isdigit() == True or len(self.Nombre) >0 or len(self.Stock) >0 or len(self.Stock) >0 or self.Stock.isdigit() == True):
             query = 'INSERT or IGNORE INTO Producto VALUES(?, ?, ?, ?, ?)'
-            parametros = (self.Id, self.Precio, self.Nombre, self.Desc, self.Stock)
+            parametros = (self.Id, self.Nombre, self.Stock, self.Desc, self.Precio)
             self.consultar(query, parametros)
+            QMessageBox.question(self, 'LISTO', "Se agrego el producto correctamente", QMessageBox.Ok)
         else:
             QMessageBox.question(self, 'ERROR', "Datos inválidos", QMessageBox.Ok)
 
@@ -131,8 +199,3 @@ class VentanaAnadir(QMainWindow):
         window = VentanaMenu()
         window.show()
     
-#if __name__ == '__main__':
-#    app = QApplication([])
-#    window = VentanaAnadir()
-#    window.show()
-#    app.exec_()

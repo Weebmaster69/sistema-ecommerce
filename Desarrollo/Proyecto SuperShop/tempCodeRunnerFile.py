@@ -1,1 +1,0 @@
-QMessageBox.question(self, 'ERROR', "Usuario o contraseña Incorrecta", QMessageBox.Ok)
